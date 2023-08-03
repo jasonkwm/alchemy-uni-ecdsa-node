@@ -12,11 +12,13 @@ function Transfer({ address, setBalance }) {
 
   async function transfer(evt) {
     evt.preventDefault();
+
     const message = {sender: address , receiver:recipient, amount:sendAmount}
     const hashMsg = hashMessage(message);
     const pubKey = secp256k1.getPublicKey(privateKey);
     const signature = await signMessage(message, privateKey);
     const isSigned = secp256k1.verify(signature, hashMsg, pubKey);
+
     try {
       const promise = await server.post("send", {
         message:message,
@@ -26,7 +28,6 @@ function Transfer({ address, setBalance }) {
       setBalance(promise.data.balance);
     } catch (error) {
       alert(error.response.data.message);
-      // console.log("error", error);
     }
   }
 
@@ -51,8 +52,9 @@ function Transfer({ address, setBalance }) {
           onChange={setValue(setRecipient)}
           required
         ></input>
-        </label>
-        <label>
+      </label>
+
+      <label>
         Private Key: 
         <input
           placeholder="Type your private key to sign transaction"
@@ -68,20 +70,3 @@ function Transfer({ address, setBalance }) {
 }
 
 export default Transfer;
-
-
-// try {
-//   const {
-//     data: { balance },
-//   } = await server.post(`send`, {
-//     sender: address,
-//     amount: parseInt(sendAmount),
-//     recipient,
-//     msgHash,
-//     signature,
-//   });
-//   console.log(balance)
-//   setBalance(balance);
-// } catch (ex) {
-//   alert(ex.response.data.message);
-// }
