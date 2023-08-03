@@ -6,7 +6,7 @@ import { useState } from "react";
 function App() {
   const [balance, setBalance] = useState(0);
   const [address, setAddress] = useState("");
-
+  const [newWallet, setNewWallet] = useState({});
   return (
     <div className="app">
       <Wallet
@@ -14,6 +14,8 @@ function App() {
         setBalance={setBalance}
         address={address}
         setAddress={setAddress}
+        newWallet={newWallet}
+        setNewWallet={setNewWallet}
       />
       <Transfer setBalance={setBalance} address={address} />
     </div>
